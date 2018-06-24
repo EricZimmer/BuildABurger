@@ -15,8 +15,8 @@ const buildControls = (props) => (
       return <BuildControl 
         key={ctrl.label} 
         label={ctrl.label}
-        addIngr={() => props.addIngr(ctrl.type)}
-        remIngr={() => props.remIngr(ctrl.type)}  />
+        addIngr={() => props.addIngr(ctrl.type, 'ADD')}
+        remIngr={() => props.remIngr(ctrl.type, 'SUB')}  />
     })}
   </div>
 );

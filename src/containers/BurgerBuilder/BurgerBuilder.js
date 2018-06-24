@@ -4,10 +4,10 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
 const INGREDIENT_PRICES = {
-  lettuce: 0.5,
-  cheese: 1,
-  bacon: 0.9,
-  meat: 1.5
+  lettuce: 0.50,
+  cheese: 1.00,
+  bacon: 0.90,
+  meat: 1.50
 };
 
 class BurgerBuilder extends Component {
@@ -17,15 +17,15 @@ class BurgerBuilder extends Component {
     this.state = {
       ingredients: {
         lettuce: 0,
-        bacon: 1,
+        bacon: 0,
         cheese: 0,
-        meat: 1
+        meat: 0
       },
-      totalPrice: 4
+      totalPrice: 4.00
     }
   }
 
-  addIngredientHandler = (type) => {
+/*   addIngredientHandler = (type) => {
     const oldCount = this.state.ingredients[type];
     const updatedCount = oldCount + 1;
     const updatedIngredients = {
@@ -57,17 +57,48 @@ class BurgerBuilder extends Component {
       ingredients: updatedIngredients,
       totalPrice: newPrice
     });
+  } */
+
+  changeIngredientHandler = (type, addOrSub) => {
+    const oldCount = this.state.ingredients[type];
+    let updatedCount = oldCount;
+    const updatedIngredients = {...this.state.ingredients};
+    const oldPrice = this.state.totalPrice;
+    let newPrice = oldPrice;
+    const priceChange = INGREDIENT_PRICES[type]
+  
+    if(addOrSub === 'ADD') {
+      updatedCount += 1;
+      newPrice += priceChange;
+    } else if(oldCount >= 1 && addOrSub === 'SUB') {
+      updatedCount -= 1;
+      newPrice -= priceChange;
+    }
+
+    
+    console.log('LOCALPRICE', newPrice);
+    
+    updatedIngredients[type] = updatedCount;
+    
+    this.setState({
+      ingredients: updatedIngredients,
+      totalPrice: newPrice
+    });
+
+    console.log('STATEPRICE', this.state.totalPrice);
   }
 
   render() {
     
     return(
       <Auxhoc>
-        <Burger ingredients={this.state.ingredients}/>
+        <Burger 
+          ingredients={this.state.ingredients}
+          priceTotal={this.state.totalPrice} />
         <div>
           <BuildControls 
-            addIngr={this.addIngredientHandler}
-            remIngr={this.removeIngredientHandler} />
+            addIngr={this.changeIngredientHandler}
+            remIngr={this.changeIngredientHandler} />
         </div>
       </Auxhoc>
     );

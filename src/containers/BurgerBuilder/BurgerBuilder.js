@@ -5,9 +5,11 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
 const INGREDIENT_PRICES = {
   lettuce: 0.50,
+  tomato: 0.65,
+  pickle: 0.25,
   cheese: 1.00,
   bacon: 0.90,
-  meat: 1.50
+  meat: 1.70
 };
 
 class BurgerBuilder extends Component {
@@ -17,11 +19,14 @@ class BurgerBuilder extends Component {
     this.state = {
       ingredients: {
         lettuce: 0,
+        tomato: 0,
+        pickle: 0,
         bacon: 0,
         cheese: 0,
         meat: 0
       },
-      totalPrice: 4.00
+      totalPrice: 4.00,
+      purchasable: false
     }
   }
 
@@ -59,7 +64,18 @@ class BurgerBuilder extends Component {
     });
   } */
 
-  changeIngredientHandler = (type, addOrSub) => {
+  updatePurchaseState(ingredients) {
+    const sum = Object.keys(ingredients)
+      .map(ingrKey => {
+        return ingredients[ingrKey];
+      })
+      .reduce((sum, el) =>{
+        return sum + el;
+      }, 0);
+    this.setState({purchasable: sum > 0});
+  }
+
+  changeIngredientHandler = (type, addOrRem) => {
     const oldCount = this.state.ingredients[type];
     let updatedCount = oldCount;
     const updatedIngredients = {...this.state.ingredients};
@@ -67,38 +83,41 @@ class BurgerBuilder extends Component {
     let newPrice = oldPrice;
     const priceChange = INGREDIENT_PRICES[type]
   
-    if(addOrSub === 'ADD') {
+    if(addOrRem === 'ADD') {
       updatedCount += 1;
       newPrice += priceChange;
-    } else if(oldCount >= 1 && addOrSub === 'SUB') {
+    } else if(oldCount >= 1 && addOrRem === 'REM') {
       updatedCount -= 1;
       newPrice -= priceChange;
     }
 
-    
-    console.log('LOCALPRICE', newPrice);
-    
     updatedIngredients[type] = updatedCount;
     
     this.setState({
       ingredients: updatedIngredients,
       totalPrice: newPrice
     });
-
-    console.log('STATEPRICE', this.state.totalPrice);
-  }
+    this.updatePurchaseState(updatedIngredients);
+} 
 
   render() {
-    
+    const disableInfo = {
+      ...this.state.ingredients
+    };
+    for (let key in disableInfo) {
+      disableInfo[key] = disableInfo[key] <=0;
+    }
     return(
       <Auxhoc>
         <Burger 
-          ingredients={this.state.ingredients}
-          priceTotal={this.state.totalPrice} />
+          ingredients={this.state.ingredients} />
         <div>
           <BuildControls 
+            priceTotal={this.state.totalPrice}
             addIngr={this.changeIngredientHandler}
-            remIngr={this.changeIngredientHandler} />
+            remIngr={this.changeIngredientHandler}
+            disabled={disableInfo}
+            purchasable={this.state.purchasable} />
         </div>
       </Auxhoc>
     );

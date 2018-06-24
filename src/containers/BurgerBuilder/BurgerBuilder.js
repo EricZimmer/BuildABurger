@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Auxhoc from '../../hoc/Auxhoc';
 import Burger from '../../components/Burger/Burger';
+import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
 class BurgerBuilder extends Component {
 
@@ -8,10 +9,10 @@ class BurgerBuilder extends Component {
     super(props);
     this.state = {
       ingredients: {
-        lettuce: 1,
-        bacon: 3,
-        cheese: 2,
-        meat: 2
+        lettuce: 0,
+        bacon: 0,
+        cheese: 0,
+        meat: 0
       }
     }
   }
@@ -21,7 +22,7 @@ class BurgerBuilder extends Component {
       <Auxhoc>
         <Burger ingredients={this.state.ingredients}/>
         <div>
-          Build Controls
+          <BuildControls />
         </div>
       </Auxhoc>
     );

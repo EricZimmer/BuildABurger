@@ -64,7 +64,8 @@ class BurgerBuilder extends Component {
     });
   } */
 
-  updatePurchaseState(ingredients) {
+  updatePurchaseState() {
+    /* //requires (ingredients) passed within changedIngredientHandler(updatedIngredients)
     const sum = Object.keys(ingredients)
       .map(ingrKey => {
         return ingredients[ingrKey];
@@ -72,7 +73,16 @@ class BurgerBuilder extends Component {
       .reduce((sum, el) =>{
         return sum + el;
       }, 0);
-    this.setState({purchasable: sum > 0});
+    this.setState({purchasable: sum > 0}); */
+    this.setState((prevState, props) => {
+      const ingredients = {...prevState.ingredients};
+      const sum = Object.keys(ingredients)
+        .map(ingrKey => (ingredients[ingrKey]))
+        .reduce((prevSum, curSum) => (prevSum + curSum), 0)
+        return {
+          purchasable: sum > 0
+        }
+    });
   }
 
   changeIngredientHandler = (type, addOrRem) => {
@@ -97,7 +107,7 @@ class BurgerBuilder extends Component {
       ingredients: updatedIngredients,
       totalPrice: newPrice
     });
-    this.updatePurchaseState(updatedIngredients);
+    this.updatePurchaseState();
 } 
 
   render() {

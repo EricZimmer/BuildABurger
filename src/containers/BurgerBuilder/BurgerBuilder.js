@@ -3,6 +3,9 @@ import Auxhoc from '../../hoc/Auxhoc';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+
 const INGREDIENT_PRICES = {
   lettuce: 0.50,
   tomato: 0.65,
@@ -26,7 +29,8 @@ class BurgerBuilder extends Component {
         meat: 0
       },
       totalPrice: 4.00,
-      purchasable: false
+      purchasable: false,
+      purchasing: false
     }
   }
 
@@ -85,13 +89,17 @@ class BurgerBuilder extends Component {
     });
   }
 
+  purchaseHandler = () => {
+    this.setState({purchasing: true});
+  }
+
   changeIngredientHandler = (type, addOrRem) => {
     const oldCount = this.state.ingredients[type];
     let updatedCount = oldCount;
     const updatedIngredients = {...this.state.ingredients};
     const oldPrice = this.state.totalPrice;
     let newPrice = oldPrice;
-    const priceChange = INGREDIENT_PRICES[type]
+    const priceChange = INGREDIENT_PRICES[type];
   
     if(addOrRem === 'ADD') {
       updatedCount += 1;
@@ -119,6 +127,9 @@ class BurgerBuilder extends Component {
     }
     return(
       <Auxhoc>
+        <Modal show={this.state.purchasing}>
+          <OrderSummary ingredients={this.state.ingredients} />
+        </Modal>
         <Burger 
           ingredients={this.state.ingredients} />
         <div>
@@ -127,7 +138,8 @@ class BurgerBuilder extends Component {
             addIngr={this.changeIngredientHandler}
             remIngr={this.changeIngredientHandler}
             disabled={disableInfo}
-            purchasable={this.state.purchasable} />
+            purchasable={this.state.purchasable}
+            ordered={this.purchaseHandler} />
         </div>
       </Auxhoc>
     );

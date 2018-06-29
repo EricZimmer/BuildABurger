@@ -6,6 +6,7 @@
   left: 0;
   background-color: #50453b;
   display: flex;
+  flex-flow: row;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
@@ -18,4 +19,11 @@
 
 .Logo {
   height: 80%;
+}
+
+
+@media (max-width: 499px) {
+  .DesktopOnly {
+    display: none;
+  }
 }

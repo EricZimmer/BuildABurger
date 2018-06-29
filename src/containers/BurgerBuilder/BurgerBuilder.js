@@ -89,10 +89,6 @@ class BurgerBuilder extends Component {
     });
   }
 
-  purchaseHandler = () => {
-    this.setState({purchasing: true});
-  }
-
   changeIngredientHandler = (type, addOrRem) => {
     const oldCount = this.state.ingredients[type];
     let updatedCount = oldCount;
@@ -100,7 +96,7 @@ class BurgerBuilder extends Component {
     const oldPrice = this.state.totalPrice;
     let newPrice = oldPrice;
     const priceChange = INGREDIENT_PRICES[type];
-  
+    
     if(addOrRem === 'ADD') {
       updatedCount += 1;
       newPrice += priceChange;
@@ -108,7 +104,7 @@ class BurgerBuilder extends Component {
       updatedCount -= 1;
       newPrice -= priceChange;
     }
-
+    
     updatedIngredients[type] = updatedCount;
     
     this.setState({
@@ -116,7 +112,17 @@ class BurgerBuilder extends Component {
       totalPrice: newPrice
     });
     this.updatePurchaseState();
-} 
+  } 
+  
+  purchaseHandler = () => {
+    this.setState({purchasing: true});
+  }
+  purchaseCancelHandler = () => {
+    this.setState({purchasing: false});
+  }
+  purchaseContinueHandler = () => {
+    alert('You continue');
+  }
 
   render() {
     const disableInfo = {
@@ -127,8 +133,12 @@ class BurgerBuilder extends Component {
     }
     return(
       <Auxhoc>
-        <Modal show={this.state.purchasing}>
-          <OrderSummary ingredients={this.state.ingredients} />
+        <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+          <OrderSummary 
+            ingredients={this.state.ingredients}
+            priceTotal={this.state.totalPrice}
+            purchaseCanceled={this.purchaseCancelHandler}
+            purchaseContinue={this.purchaseContinueHandler} />
         </Modal>
         <Burger 
           ingredients={this.state.ingredients} />

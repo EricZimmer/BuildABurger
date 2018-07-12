@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 class CheckoutSummary extends Component {
 
   render() {
-    console.log('checkout sum props: ' + this.props.history);
     return (
       
       <div className={classes.CheckoutSummary}>

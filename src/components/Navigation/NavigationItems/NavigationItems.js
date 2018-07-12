@@ -5,14 +5,10 @@ import { Link } from 'react-router-dom';
 
 const navigationItems = (props) => (
   <ul className={classes.NavigationItems}>
-    <Link to="/">
-      <NavItem active>Build A Burger</NavItem>
+    
+    <NavItem exact link="/">Build A Burger</NavItem>
+    <NavItem link="/orders">Orders</NavItem>
 
-    </Link>
-    <Link to="/checkout">
-      <NavItem>Checkout</NavItem>
-
-    </Link>
   </ul>
 );
 

@@ -6,7 +6,7 @@ const navItem = (props) => (
     <a 
       href={props.link}
       className={props.active ? classes.active : null}>
-      {props.linkName}
+      {props.children}
     </a>
   </li>
 );

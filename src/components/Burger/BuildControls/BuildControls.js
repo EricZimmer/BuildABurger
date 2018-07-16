@@ -19,8 +19,8 @@ const buildControls = (props) => (
         key={ctrl.label} 
         label={ctrl.label}
         disabled={props.disabled[ctrl.type]}
-        addIngr={() => props.addIngr(ctrl.type, 'ADD')}
-        remIngr={() => props.remIngr(ctrl.type, 'REM')}  />
+        addIngr={() => props.addIngr(ctrl.type)}
+        remIngr={() => props.remIngr(ctrl.type)}  />
     })}
     <button 
       className={classes.OrderButton}

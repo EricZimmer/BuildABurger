@@ -19,9 +19,6 @@ class BurgerBuilder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ingredients: null,
-      totalPrice: 4.00,
-      purchasable: false,
       purchasing: false,
       loading: false,
       error: false,
@@ -47,31 +44,13 @@ class BurgerBuilder extends Component {
   }
 
 
-  updatePurchaseState() {
-    /* //requires (ingredients) passed within changedIngredientHandler(updatedIngredients)
+  updatePurchaseState(ingredients) {
     const sum = Object.keys(ingredients)
-      .map(ingrKey => {
-        return ingredients[ingrKey];
-      })
-      .reduce((sum, el) =>{
-        return sum + el;
-      }, 0);
-    this.setState({purchasable: sum > 0}); */
-    this.setState(() => {
-      const ingredients = {...this.props.ingredients};
-      const sum = Object.keys(ingredients)
-        .map(ingrKey => (ingredients[ingrKey]))
-        .reduce((prevSum, curSum) => (prevSum + curSum), 0)
-        return {
-          purchasable: sum > 0
-        }
-    });
+      .map(ingrKey => (ingredients[ingrKey]))
+      .reduce((prevSum, curSum) => (prevSum + curSum), 0);
+    return  sum > 0;
   }
 
-  changeIngredientHandler = (type, addOrRem) => {
- 
-    this.updatePurchaseState();
-  } 
   
   purchaseHandler = () => {
     this.setState({purchasing: true});
@@ -89,8 +68,7 @@ class BurgerBuilder extends Component {
     queryParams.push('price=' + this.state.totalPrice);
     const queryString = queryParams.join('&');
     this.props.history.push({
-      pathname: '/checkout/',
-      search: '?' + queryString
+      pathname: '/checkout/'
     });
 
   }
@@ -107,7 +85,6 @@ class BurgerBuilder extends Component {
     let burger = this.state.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
     
     if (this.props.ingredients) {
-      this.updatePurchaseState();
       burger = ( 
         <Auxhoc>
           <Burger 
@@ -117,7 +94,7 @@ class BurgerBuilder extends Component {
             addIngr={(ingr) => this.props.addIngredientHandler(ingr)}
             remIngr={(ingr) => this.props.removeIngredientHandler(ingr)}
             disabled={disableInfo}
-            purchasable={this.state.purchasable}
+            purchasable={this.updatePurchaseState(this.props.ingredients)}
             ordered={this.purchaseHandler} />
         </Auxhoc>
       );

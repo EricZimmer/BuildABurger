@@ -52,12 +52,7 @@ class Checkout extends Component {
           checkoutContinue={this.checkoutContinueHandler} />
         <Route 
           path={this.props.match.url + '/contact-data'}
-          render={(props) => (
-            <ContactData 
-              {...props}
-              ingredients={this.props.ingredients} 
-              price={this.props.totalPrice} />
-          )}/>
+          component={ContactData}/>
       </div>
     );
   }

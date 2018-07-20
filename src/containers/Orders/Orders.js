@@ -16,7 +16,7 @@ class Orders extends Component {
 
   render() {
     let orders = <Spinner />;
-    if (this.props.loading) {
+    if (!this.props.loading) {
       orders = (
         this.props.orders.map(order => {
         return <Order 
@@ -28,7 +28,7 @@ class Orders extends Component {
     }
     return (
       <div>
-       
+        {orders}
         
       </div>
     );
@@ -39,13 +39,13 @@ const mapStateToProps = state => {
   return {
     orders: state.order.orders,
     loading: state.order.loading
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     onFetchOrders: () => dispatch(actions.fetchOrders())
-  }
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));

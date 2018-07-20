@@ -45,12 +45,12 @@ class BurgerBuilder extends Component {
   purchaseContinueHandler = () => {
     //alert('You continue');
     
-    const queryParams = [];
+    /* const queryParams = [];
     for (let i in this.state.ingredients) {
       queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
     }
     queryParams.push('price=' + this.state.totalPrice);
-    const queryString = queryParams.join('&');
+    const queryString = queryParams.join('&'); */
     this.props.history.push({
       pathname: '/checkout/'
     });
@@ -109,9 +109,9 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state => {
   return {
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice,
-    error: state.error
+    ingredients: state.burgerBuilder.ingredients,
+    totalPrice: state.burgerBuilder.totalPrice,
+    error: state.burgerBuilder.error
   }
 };
 
